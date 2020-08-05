@@ -113,8 +113,10 @@ if $a == 5
   $english.delete(found)
   $turkish.delete(found_tr)
   $explanation.delete($explanation[found])
-
 end
+
+if $a == 6
+  end
 
 
 end
