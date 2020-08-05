@@ -3,13 +3,18 @@ class English
   $turkish = []
   $explanation = Hash.new()
   $point = 0
+  $file = "words.txt"
+  $file2 = "words2.txt"
+  $deletedWords = []
   def readFile() 
     puts "File will be read."
-    File::open( "/Users/oguzozan/Desktop/ruby/english-game/words.txt", "r" ) do |f|
+    File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file}", "r" ) do |f|
       file_data = f.readlines.map(&:chomp)  
       if file_data.respond_to?('each')
           file_data.each do |line|
               new_words = line.split("\t")
+              fillDeletedWords()
+              unless $deletedWords.include?(new_words[0])
               $english.append(new_words[0])
               $turkish.append(new_words[1])
               if new_words.length == 3
@@ -17,13 +22,31 @@ class English
               end
           end
         end
+        end
       end
       puts "File read completed."
     end
 
   def writeFile(str)
-    File::open( "/Users/oguzozan/Desktop/ruby/english-game/words.txt", "a" ) do |f|
-      f << str
+    File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file}", "a" ) do |f|
+      f << str.downcase
+    end
+  end
+
+  def writeDeletedFile(str)
+    File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file2}", "a" ) do |f|
+      f << str.downcase
+    end
+  end
+
+  def fillDeletedWords()
+    File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file2}", "r" ) do |f|
+      file_data = f.readlines.map(&:chomp)
+      if file_data.respond_to?('each')
+          file_data.each do |line|
+          $deletedWords.append(line)
+        end
+      end
     end
   end
 
@@ -113,6 +136,10 @@ if $a == 5
   $english.delete(found)
   $turkish.delete(found_tr)
   $explanation.delete($explanation[found])
+  $deletedWords.append(found)
+  program.writeDeletedFile("#{found}\n")
+
+  
 end
 
 if $a == 6
