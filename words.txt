@@ -138,3 +138,10 @@ condolence	başsağlığı	make a call of condolence, message of condolence
 bum	otlakçı	he is a bum
 settler	göçmen, yerleşimci	white settlers (while exploration of america)
 sincere	içten	I am sincere with my desire.
+aspire	can atmak, heveslenmek	you aspire to do great things? begin with little ones.
+stand out	fırlamak, atılmak, göze çarpmak	they'll stand out against such humiliating conditions.
+opt	karar kılmak, tercih etmek	many students opt for business studies.. (opt out => çekilmeek)
+undertake	girişmek, yüklenmek	 i want you to undertake all the responsibility.
+beverage	meşrubat	
+get along	birbiriyle geçinmek, idare etmek	i don't get along well with her.
+put on the spot	zor durumda bırakmak	the interviewer's questions really put him on the spot.
