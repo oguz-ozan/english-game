@@ -116,8 +116,9 @@ if $a == 2
     $i += 1
   end
   puts "Skor: #{$point}/#{$limit}"
+  t = Time.now
    File::open( "/Users/oguzozan/Desktop/ruby/english-game/results.txt", "a+" ) do |f|
-      f << "Skor: #{$point}/#{$limit}\n"
+      f << "Skor: #{$point}/#{$limit}    #{t.day}/#{t.month}/#{t.year}\n"
     end
 end
 
