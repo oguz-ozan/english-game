@@ -8,27 +8,29 @@ class English
   $file3 = "falsedWords.txt"
   $deletedWords = []
   $falsedWords = []
+  $falsedOverwrite = []
 
   def readFile() 
     puts "File will be read."
+    fillDeletedWords()
+    fillFalsedWords()
     File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file}", "r" ) do |f|
       file_data = f.readlines.map(&:chomp)  
       if file_data.respond_to?('each')
-          file_data.each do |line|
-              new_words = line.split("\t")
-              fillDeletedWords()
-              unless $deletedWords.include?(new_words[0])
-              $english.append(new_words[0])
-              $turkish.append(new_words[1])
-              if new_words.length == 3
-                $explanation["#{new_words[0]}"] = new_words[2]
-              end
+        file_data.each do |line|
+          new_words = line.split("\t")
+          unless $deletedWords.include?(new_words[0])
+            $english.append(new_words[0])
+            $turkish.append(new_words[1])
+            if new_words.length == 3
+              $explanation["#{new_words[0]}"] = new_words[2]
+            end
           end
         end
-        end
       end
-      puts "File read completed."
     end
+    puts "File read completed."
+  end
 
   def writeFile(str)
     File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file}", "a" ) do |f|
@@ -86,22 +88,37 @@ class English
       else
         num = rand(len)  
       end
+      if $falsedWords.length > 0
+        engWord = $falsedWords.pop
+        trWord = $turkish[$english.index(engWord)]
+        explainWord = $explanation["#{engWord}"]
+        puts "length is: #{$falsedWords.length}"
+        puts "engword is : #{engWord}"
+        
+      else
+        puts "falsedwords is empty!"
+        engWord = $english[num]
+        trWord = $turkish[num]
+        explainWord = $explanation["#{$english[num]}"]
+      end
       
-      puts "\nSıradaki kelime: '#{$english[num]}'\nCevap için: C. Açıklama için: E"
+
+      puts "\nSıradaki kelime: '#{engWord}'\nCevap için: C. Açıklama için: E"
       $answer = gets.chomp.downcase
       if($answer == "e")
-        puts "Açıklama: #{$explanation["#{$english[num]}"]}"
+        puts "Açıklama: #{$explainWord}"
         puts "Cevap için: C"
         $answer = gets.chomp.downcase
       end
 
       if($answer == "c")
-        puts "'#{$turkish[num]}'. Bildiysen Y, bilemediysen N"
+        puts "'#{trWord}'. Bildiysen Y, bilemediysen N"
         $answer = gets.chomp.downcase
         if($answer == "y")
           $point += 1
         else
-          writeFalsedFile("#{$english[num]}\n")
+          puts "added to overwrited."
+          $falsedOverwrite.append(engWord)
         end 
       end
       $i += 1
@@ -111,7 +128,15 @@ class English
     File::open( "/Users/oguzozan/Desktop/ruby/english-game/results.txt", "a+" ) do |f|
       f << "Skor: #{$point}/#{$limit}    #{t.day}/#{t.month}/#{t.year}\n"
     end
+    File::open( "/Users/oguzozan/Desktop/ruby/english-game/#{$file3}", "w" ) do |f|
+      if $falsedOverwrite.respond_to?("each") 
+        $falsedOverwrite.each do |word|
+        puts "inhere"
+        f << "#{word}\n"
+    end
   end
+end
+end
 
 
 
